@@ -1,0 +1,24 @@
+{
+  "my_pets": {
+	"dog": {
+	  "breed": "Dalmatian",
+	  "age": 3,
+	  "traits": {
+		"eye_color": "brown",
+		"main_color": "white",
+		"primary_color": "black",
+		"mass": "15kg"
+	  }
+	},
+	"cat": {
+	  "breed": "Bengal",
+	  "age": 2,
+	  "traits": {
+		"eye_color": "green",
+		"primary_color": "orange",
+		"secondary_color": "black",
+		"mass": "5kg"
+	  }
+    }
+  }
+}
