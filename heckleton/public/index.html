@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Heckleton — he's mean, but he's right</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500;1,9..144,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Scratchy hand-drawn filter applied to panes/borders -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <filter id="scratch">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="3" seed="7" result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3.2" />
+    </filter>
+    <filter id="scratch-soft">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" seed="3" result="n" />
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="1.8" />
+    </filter>
+  </svg>
+
+  <header class="topbar">
+    <div class="chrome-dots"><span></span><span></span><span></span></div>
+    <div class="topbar-title">heckleton.exe</div>
+    <div class="topbar-status" id="modeBadge">booting…</div>
+  </header>
+
+  <main class="desk">
+    <p class="tagline"><em>A pre-publish post-vetting troll for your enablement content.</em> Paste a draft. He'll roast it before the internet does.</p>
+
+    <!-- ===================== HECKLETON'S BRIEF ===================== -->
+    <section class="pane brief" data-window="Heckleton's Brief">
+      <div class="pane-bar"><span class="pane-dots"><i></i><i></i><i></i></span><span class="pane-name">Heckleton's Brief — your morning post ideas</span><button class="pane-btn" id="briefRefresh">↻ new brief</button></div>
+      <div class="pane-body" id="briefBody">
+        <div class="loading">Waking Heckleton for today's brief…</div>
+      </div>
+    </section>
+
+    <!-- ===================== THE VETTING WORKBENCH ===================== -->
+    <section class="workbench">
+      <div class="pane editor" data-window="Draft">
+        <div class="pane-bar"><span class="pane-dots"><i></i><i></i><i></i></span><span class="pane-name">Your draft</span></div>
+        <div class="pane-body">
+          <textarea id="draft" placeholder="Paste the post you're about to publish…"></textarea>
+          <div class="controls">
+            <label class="ctl">
+              <span>Platform</span>
+              <select id="platform">
+                <option value="linkedin">LinkedIn</option>
+                <option value="beehiiv">beehiiv</option>
+                <option value="substack">Substack</option>
+              </select>
+            </label>
+            <label class="ctl dial-ctl">
+              <span>Severity: <strong id="sevLabel">Brutal</strong></span>
+              <input type="range" id="severity" min="1" max="5" value="3" />
+              <span class="dial-ends"><i>mild</i><i>scorched earth</i></span>
+            </label>
+          </div>
+          <div class="actions">
+            <button class="btn primary" id="roastBtn">🔥 Roast it</button>
+            <button class="btn ghost" id="earnestBtn">🤝 Earnest friend</button>
+          </div>
+          <div class="translate-row">
+            <span class="mono">Translate to</span>
+            <select id="translateTo">
+              <option value="linkedin">LinkedIn</option>
+              <option value="beehiiv">beehiiv</option>
+              <option value="substack" selected>Substack</option>
+            </select>
+            <button class="btn small" id="translateBtn">↪ Translate</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pane heckleton-pane" data-window="Heckleton">
+        <div class="pane-bar"><span class="pane-dots"><i></i><i></i><i></i></span><span class="pane-name">Heckleton</span></div>
+        <div class="pane-body heckleton-body" id="heckletonStage">
+          <div id="face"></div>
+          <div class="meter">
+            <div class="meter-num"><span id="riskNum">—</span><small>/100 risk</small></div>
+            <div class="meter-bar"><div id="riskFill"></div></div>
+          </div>
+          <p class="speech" id="verdict">Paste something. Make my day worse.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== RESULTS ===================== -->
+    <section class="pane results" data-window="Critique" id="resultsPane" hidden>
+      <div class="pane-bar"><span class="pane-dots"><i></i><i></i><i></i></span><span class="pane-name" id="resultsTitle">Line-by-line</span></div>
+      <div class="pane-body" id="resultsBody"></div>
+    </section>
+
+    <!-- ===================== CONNECTORS ===================== -->
+    <section class="connectors">
+      <div class="pane connector" data-window="Drive">
+        <div class="pane-bar"><span class="pane-dots"><i></i><i></i><i></i></span><span class="pane-name">Drive / Notion connector</span></div>
+        <div class="pane-body">
+          <p class="muted">Paste a page URL + integration token. He ingests the full page (toggles included) and mines tomorrow's idea.</p>
+          <input class="field" id="driveUrl" placeholder="Notion page or Google Doc URL" />
+          <input class="field mono" id="driveToken" type="password" placeholder="integration token / access token" />
+          <button class="btn small" id="driveBtn">Ingest &amp; mine</button>
+          <div class="connector-out" id="driveOut"></div>
+        </div>
+      </div>
+
+      <div class="pane connector" data-window="Winners">
+        <div class="pane-bar"><span class="pane-dots"><i></i><i></i><i></i></span><span class="pane-name">LinkedIn winners</span></div>
+        <div class="pane-body">
+          <p class="muted">Paste your top-performing posts. He distills the topics, frameworks, and hook styles that work for <em>you</em>.</p>
+          <textarea class="field" id="winnersIn" placeholder="Paste 2-5 of your best posts, separated by blank lines…"></textarea>
+          <button class="btn small" id="winnersBtn">Distill my playbook</button>
+          <div class="connector-out" id="winnersOut"></div>
+        </div>
+      </div>
+
+      <div class="pane connector" data-window="News">
+        <div class="pane-bar"><span class="pane-dots"><i></i><i></i><i></i></span><span class="pane-name">Live news cycle</span></div>
+        <div class="pane-body">
+          <p class="muted">What's happening in startups, tech &amp; enablement right now — and what could land badly today.</p>
+          <button class="btn small" id="newsBtn">Scan the cycle</button>
+          <div class="connector-out" id="newsOut"></div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer mono">heckleton // mean but right • built with claude-opus-4-8</footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
