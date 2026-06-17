@@ -50,6 +50,28 @@ UI is clickable, critiques are real-ish, faces and angry mode work. Set
 | `HECKLETON_MODEL` | `claude-opus-4-8` | Anthropic's most capable Opus-tier model. |
 | `PORT` | `4173` | Dashboard port. |
 
+## Deploy (host it) — Render
+
+This repo ships a Render Blueprint (`render.yaml` at the repo root), so hosting
+is mostly clicks:
+
+1. Push to GitHub (already done if you're reading this on `main`).
+2. In [Render](https://render.com): **New → Blueprint**, connect this repo, and
+   approve the `heckleton` service it detects.
+3. (Optional, for real roasts) In the service's **Environment** tab, add a secret
+   `ANTHROPIC_API_KEY`. Leave it unset to run in demo mode. **Never commit the key**
+   — `render.yaml` marks it `sync: false` precisely so it lives only in the dashboard.
+4. Render builds (`npm install`) and starts (`npm start`); you get a public
+   `…onrender.com` URL. Every push to the deploy branch auto-redeploys.
+
+> Free instances sleep after ~15 min idle, so the first request after a nap is
+> slow (~30–50s) while it wakes. Fine for a demo; bump to a paid instance for
+> always-on.
+
+Other Node hosts (Railway, Fly.io, a VM) work too — they just need
+`npm install` then `npm start`, with `PORT` and `ANTHROPIC_API_KEY` set in the
+environment. The server already reads `process.env.PORT`.
+
 ## How it works
 
 - **Backend** (`server.js` + `lib/`) — Express. Each feature is one endpoint that

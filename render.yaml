@@ -1,0 +1,22 @@
+# Render Blueprint for Heckleton.
+# In Render: New → Blueprint → connect this repo. Render reads this file and
+# provisions the service. Then set ANTHROPIC_API_KEY in the dashboard (it is a
+# secret — sync:false means it is NEVER stored in the repo). Without it,
+# Heckleton still runs in demo mode.
+services:
+  - type: web
+    name: heckleton
+    runtime: node
+    rootDir: heckleton
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/status
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: HECKLETON_MODEL
+        value: claude-opus-4-8
+      - key: ANTHROPIC_API_KEY
+        sync: false # set this in the Render dashboard; leave unset for demo mode
